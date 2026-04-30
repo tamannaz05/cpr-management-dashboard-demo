@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPR Management Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">❤️</div>
+      <div class="logo-text">CPR <span>Manager</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Overview</div>
+      <div class="nav-item active" onclick="navigate('dashboard', this)">
+        <span class="nav-icon">📊</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="navigate('users', this)">
+        <span class="nav-icon">👥</span> Users
+        <span class="nav-badge">247</span>
+      </div>
+      <div class="nav-item" onclick="showToast('🚧 Coming soon!', '🔒')">
+        <span class="nav-icon">🏢</span> Clients
+        <span class="nav-badge amber">12</span>
+      </div>
+      <div class="nav-item" onclick="showToast('🚧 Coming soon!', '📅')">
+        <span class="nav-icon">📅</span> Schedule
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Compliance</div>
+      <div class="nav-item" onclick="showToast('🚧 Coming soon!', '📜')">
+        <span class="nav-icon">📜</span> Certifications
+        <span class="nav-badge red">8</span>
+      </div>
+      <div class="nav-item" onclick="showToast('🚧 Coming soon!', '⏰')">
+        <span class="nav-icon">⏰</span> Renewals
+      </div>
+      <div class="nav-item" onclick="showToast('🚧 Coming soon!', '📋')">
+        <span class="nav-icon">📋</span> Reports
+      </div>
+      <div class="nav-item" onclick="showToast('🚧 Coming soon!', '🔔')">
+        <span class="nav-icon">🔔</span> Reminders
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Settings</div>
+      <div class="nav-item" onclick="showToast('🚧 Coming soon!', '⚙️')">
+        <span class="nav-icon">⚙️</span> Settings
+      </div>
+      <div class="nav-item" onclick="showToast('🚧 Coming soon!', '🔗')">
+        <span class="nav-icon">🔗</span> Integrations
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">JD</div>
+        <div class="user-info">
+          <div class="user-name">James Dawson</div>
+          <div class="user-role">Admin · Enterprise</div>
+        </div>
+        <span style="font-size:0.8rem;color:var(--text-muted)">⚙️</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-title" id="topbar-title">
+        Dashboard <span>/ Overview</span>
+      </div>
+
+      <div class="search-bar">
+        <span style="color:var(--text-muted);font-size:0.9rem">🔍</span>
+        <input type="text" placeholder="Search employees, certifications…" oninput="globalSearch(this.value)">
+        <kbd style="font-size:0.68rem;color:var(--text-muted);background:var(--surface-2);padding:2px 5px;border-radius:4px;border:1px solid var(--border);flex-shrink:0">⌘K</kbd>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="icon-btn" onclick="showToast('Filters opened', '🔧')" title="Filters">⚡</div>
+        <div class="icon-btn relative" onclick="toggleNotifPanel()" title="Notifications">
+          🔔
+          <span class="notif-dot"></span>
+        </div>
+        <button class="btn btn-primary" onclick="showToast('New record created!', '✅')">
+          ＋ New Record
+        </button>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════ DASHBOARD PAGE ════════════════════════ -->
+    <div class="page active" id="page-dashboard">
+      <div style="padding: 0 0 20px;">
+
+        <!-- CTA Banner -->
+        <div class="cta-banner">
+          <div class="cta-content">
+            <div class="cta-title">🎯 Q4 Compliance Audit approaching — 18 certifications need renewal</div>
+            <div class="cta-sub">Schedule bulk renewal sessions to stay ahead of your compliance deadlines.</div>
+          </div>
+          <div class="cta-actions">
+            <button class="btn-white" onclick="showToast('Scheduling bulk renewal...', '📅')">Schedule Now</button>
+            <button class="btn-outline-white" onclick="showToast('Report generated!', '📊')">View Report</button>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card" style="--kpi-color:#2563eb; --kpi-icon-bg:#eff4ff;" onclick="showToast('Training data loaded', '📚')">
+            <div class="kpi-top">
+              <div class="kpi-icon">📚</div>
+              <div class="kpi-trend up">↑ 4.2%</div>
+            </div>
+            <div class="kpi-value" data-count="94">0%</div>
+            <div class="kpi-label">Training Completion</div>
+            <div class="kpi-sparkline">
+              <svg class="sparkline-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+                <polyline points="0,28 20,22 40,25 60,14 80,10 100,8 120,6"
+                  fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="0,28 20,22 40,25 60,14 80,10 100,8 120,6 120,36 0,36"
+                  fill="rgba(37,99,235,0.08)" stroke="none"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="kpi-card" style="--kpi-color:#059669; --kpi-icon-bg:#ecfdf5;" onclick="showToast('Compliance data loaded', '✅')">
+            <div class="kpi-top">
+              <div class="kpi-icon">✅</div>
+              <div class="kpi-trend up">↑ 2.1%</div>
+            </div>
+            <div class="kpi-value" data-count="87">0%</div>
+            <div class="kpi-label">Compliance Rate</div>
+            <div class="kpi-sparkline">
+              <svg class="sparkline-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+                <polyline points="0,30 20,28 40,24 60,20 80,18 100,15 120,12"
+                  fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="0,30 20,28 40,24 60,20 80,18 100,15 120,12 120,36 0,36"
+                  fill="rgba(5,150,105,0.08)" stroke="none"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="kpi-card" style="--kpi-color:#7c3aed; --kpi-icon-bg:#f5f3ff;" onclick="showToast('Certification data loaded', '🏆')">
+            <div class="kpi-top">
+              <div class="kpi-icon">🏆</div>
+              <div class="kpi-trend up">↑ 12</div>
+            </div>
+            <div class="kpi-value" data-count="318">0</div>
+            <div class="kpi-label">Active Certifications</div>
+            <div class="kpi-sparkline">
+              <svg class="sparkline-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+                <polyline points="0,32 20,28 40,26 60,22 80,18 100,14 120,10"
+                  fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="0,32 20,28 40,26 60,22 80,18 100,14 120,10 120,36 0,36"
+                  fill="rgba(124,58,237,0.08)" stroke="none"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="kpi-card" style="--kpi-color:#0891b2; --kpi-icon-bg:#ecfeff;" onclick="showToast('Client data loaded', '🏢')">
+            <div class="kpi-top">
+              <div class="kpi-icon">🏢</div>
+              <div class="kpi-trend up">↑ 3</div>
+            </div>
+            <div class="kpi-value" data-count="47">0</div>
+            <div class="kpi-label">Active Clients</div>
+            <div class="kpi-sparkline">
+              <svg class="sparkline-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+                <polyline points="0,34 20,30 40,28 60,24 80,20 100,18 120,14"
+                  fill="none" stroke="#0891b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="0,34 20,30 40,28 60,24 80,20 100,18 120,14 120,36 0,36"
+                  fill="rgba(8,145,178,0.08)" stroke="none"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main dashboard grid -->
+        <div class="dashboard-grid">
+
+          <!-- Certification Overview Chart -->
+          <div class="card chart-card col-span-2">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Certification Overview</div>
+                <div class="card-subtitle">Monthly completions across all client orgs</div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <div class="chart-tabs" style="padding:0;margin:0">
+                  <div class="chart-tab active" onclick="setChartTab(this,'monthly')">Monthly</div>
+                  <div class="chart-tab" onclick="setChartTab(this,'quarterly')">Quarterly</div>
+                  <div class="chart-tab" onclick="setChartTab(this,'yearly')">Yearly</div>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="showToast('Exporting chart...', '📥')">⬇ Export</button>
+              </div>
+            </div>
+            <div class="chart-area">
+              <canvas id="certChart" height="200"></canvas>
+            </div>
+          </div>
+
+          <!-- Upcoming Renewals -->
+          <div class="card row-span-2">
+            <div class="card-header">
+              <div>
+                <div class="card-title">⏰ Upcoming Renewals</div>
+                <div class="card-subtitle">Next 30 days</div>
+              </div>
+              <span class="badge badge-amber">18 due</span>
+            </div>
+            <div class="renewal-list">
+              <div class="renewal-item" onclick="showToast('Opening renewal for Sarah M.', '📋')">
+                <div class="avatar sm avatar-colors">SM</div>
+                <div class="renewal-info">
+                  <div class="renewal-name">Sarah Mitchell</div>
+                  <div class="renewal-detail">CPR-AED · Expires in 3 days</div>
+                </div>
+                <span class="badge badge-red">Urgent</span>
+              </div>
+              <div class="renewal-item" onclick="showToast('Opening renewal for James K.', '📋')">
+                <div class="avatar sm avatar-colors-2">JK</div>
+                <div class="renewal-info">
+                  <div class="renewal-name">James Kim</div>
+                  <div class="renewal-detail">BLS · Expires in 7 days</div>
+                </div>
+                <span class="badge badge-red">Urgent</span>
+              </div>
+              <div class="renewal-item" onclick="showToast('Opening renewal for Lisa R.', '📋')">
+                <div class="avatar sm">LR</div>
+                <div class="renewal-info">
+                  <div class="renewal-name">Lisa Roberts</div>
+                  <div class="renewal-detail">First Aid · Expires in 12 days</div>
+                </div>
+                <span class="badge badge-amber">Soon</span>
+              </div>
+              <div class="renewal-item" onclick="showToast('Opening renewal for Tom A.', '📋')">
+                <div class="avatar sm avatar-colors-3">TA</div>
+                <div class="renewal-info">
+                  <div class="renewal-name">Tom Anderson</div>
+                  <div class="renewal-detail">CPR · Expires in 18 days</div>
+                </div>
+                <span class="badge badge-amber">Soon</span>
+              </div>
+              <div class="renewal-item" onclick="showToast('Opening renewal for Nina P.', '📋')">
+                <div class="avatar sm avatar-colors-4">NP</div>
+                <div class="renewal-info">
+                  <div class="renewal-name">Nina Patel</div>
+                  <div class="renewal-detail">ACLS · Expires in 24 days</div>
+                </div>
+                <span class="badge badge-blue">Upcoming</span>
+              </div>
+              <div class="renewal-item" onclick="showToast('Opening renewal for Chris W.', '📋')">
+                <div class="avatar sm">CW</div>
+                <div class="renewal-info">
+                  <div class="renewal-name">Chris Wang</div>
+                  <div class="renewal-detail">BLS · Expires in 28 days</div>
+                </div>
+                <span class="badge badge-blue">Upcoming</span>
+              </div>
+            </div>
+            <div style="padding:0 22px 20px">
+              <button class="btn btn-secondary btn-sm" style="width:100%" onclick="showToast('Loading all renewals...', '⏰')">View All Renewals →</button>
+            </div>
+          </div>
+
+          <!-- Department Compliance -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Department Compliance</div>
+                <div class="card-subtitle">Training completion by dept.</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Full report opened', '📊')">View all</button>
+            </div>
+            <div class="compliance-list" id="compliance-list">
+              <div class="compliance-item">
+                <div class="compliance-info">
+                  <div class="compliance-name">Emergency Response</div>
+                  <div class="progress-bar-wrap"><div class="progress-bar green" data-width="97"></div></div>
+                </div>
+                <div class="compliance-pct">97%</div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-info">
+                  <div class="compliance-name">Healthcare Operations</div>
+                  <div class="progress-bar-wrap"><div class="progress-bar" data-width="89"></div></div>
+                </div>
+                <div class="compliance-pct">89%</div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-info">
+                  <div class="compliance-name">Corporate Training</div>
+                  <div class="progress-bar-wrap"><div class="progress-bar teal" data-width="82"></div></div>
+                </div>
+                <div class="compliance-pct">82%</div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-info">
+                  <div class="compliance-name">Field Services</div>
+                  <div class="progress-bar-wrap"><div class="progress-bar purple" data-width="74"></div></div>
+                </div>
+                <div class="compliance-pct">74%</div>
+              </div>
+              <div class="compliance-item">
+                <div class="compliance-info">
+                  <div class="compliance-name">Administration</div>
+                  <div class="progress-bar-wrap"><div class="progress-bar amber" data-width="61"></div></div>
+                </div>
+                <div class="compliance-pct">61%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certification Distribution -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Certification Types</div>
+                <div class="card-subtitle">Distribution across workforce</div>
+              </div>
+            </div>
+            <div class="donut-wrap">
+              <canvas id="donutChart" width="110" height="110" style="flex-shrink:0;width:110px;height:110px"></canvas>
+              <div class="donut-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#2563eb"></div>CPR-AED<span class="legend-val">142</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#059669"></div>BLS<span class="legend-val">89</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div>First Aid<span class="legend-val">61</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#0891b2"></div>ACLS<span class="legend-val">26</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Feed -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Recent Activity</div>
+                <div class="card-subtitle">Live updates across your org</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Activity log opened', '📋')">All activity</button>
+            </div>
+            <div class="activity-feed">
+              <div class="activity-item">
+                <div class="activity-dot green"></div>
+                <div>
+                  <div class="activity-text"><strong>Sarah Mitchell</strong> completed CPR-AED certification</div>
+                  <div class="activity-time">2 minutes ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <div>
+                  <div class="activity-text"><strong>Acme Corp</strong> renewed enterprise plan — 45 seats added</div>
+                  <div class="activity-time">18 minutes ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot amber"></div>
+                <div>
+                  <div class="activity-text"><strong>James Kim</strong> renewal reminder sent (7 days remaining)</div>
+                  <div class="activity-time">1 hour ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot purple"></div>
+                <div>
+                  <div class="activity-text"><strong>Northwest Health</strong> onboarded — 12 new employees enrolled</div>
+                  <div class="activity-time">3 hours ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot red"></div>
+                <div>
+                  <div class="activity-text"><strong>Lisa Roberts</strong> certification expired — action required</div>
+                  <div class="activity-time">5 hours ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot green"></div>
+                <div>
+                  <div class="activity-text"><strong>Tom Anderson</strong> completed BLS refresher course</div>
+                  <div class="activity-time">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mini Calendar -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">📅 May 2025</div>
+              <div class="cal-nav">
+                <button class="cal-nav-btn" onclick="showToast('April 2025', '📅')">‹</button>
+                <button class="cal-nav-btn" onclick="showToast('June 2025', '📅')">›</button>
+              </div>
+            </div>
+            <div class="calendar-mini">
+              <div class="cal-grid">
+                <div class="cal-day-label">Su</div><div class="cal-day-label">Mo</div><div class="cal-day-label">Tu</div><div class="cal-day-label">We</div><div class="cal-day-label">Th</div><div class="cal-day-label">Fr</div><div class="cal-day-label">Sa</div>
+                <div class="cal-day other-month">27</div><div class="cal-day other-month">28</div><div class="cal-day other-month">29</div><div class="cal-day other-month">30</div><div class="cal-day">1</div><div class="cal-day has-event">2</div><div class="cal-day">3</div>
+                <div class="cal-day">4</div><div class="cal-day has-event">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day has-event">8</div><div class="cal-day">9</div><div class="cal-day">10</div>
+                <div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day has-event">13</div><div class="cal-day">14</div><div class="cal-day today">15</div><div class="cal-day">16</div><div class="cal-day">17</div>
+                <div class="cal-day has-event">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day has-event">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div>
+                <div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day has-event">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div>
+              </div>
+            </div>
+            <div class="mini-stats" style="padding-top:0">
+              <div class="mini-stat">
+                <div class="mini-stat-val" style="color:var(--red)">8</div>
+                <div class="mini-stat-label">Expiring</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-val" style="color:var(--accent)">14</div>
+                <div class="mini-stat-label">Scheduled</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-val" style="color:var(--green)">23</div>
+                <div class="mini-stat-label">Completed</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ USERS PAGE ════════════════════════ -->
+    <div class="page" id="page-users">
+
+      <div class="page-header">
+        <div class="page-header-left">
+          <h1>👥 Users Management</h1>
+          <p>Manage employees, certifications, and compliance status across all clients</p>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary" onclick="showToast('Importing users...', '📥')">⬆ Import</button>
+          <button class="btn btn-primary" onclick="openAddUser()">＋ Add User</button>
+        </div>
+      </div>
+
+      <!-- Onboarding Progress -->
+      <div class="onboarding-section">
+        <div class="onboarding-header">
+          <div>
+            <div class="card-title">🚀 Team Onboarding Progress</div>
+            <div class="card-subtitle">3 of 5 steps completed for new batch · Northwest Health Systems</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="showToast('Onboarding dashboard opened', '🚀')">Continue Setup</button>
+        </div>
+        <div class="onboarding-steps">
+          <div class="onboarding-step done"><div class="step-circle">✓</div>Account Created</div>
+          <div class="step-connector done"></div>
+          <div class="onboarding-step done"><div class="step-circle">✓</div>Users Imported</div>
+          <div class="step-connector done"></div>
+          <div class="onboarding-step done"><div class="step-circle">✓</div>Roles Assigned</div>
+          <div class="step-connector"></div>
+          <div class="onboarding-step active"><div class="step-circle">4</div>Certifications</div>
+          <div class="step-connector"></div>
+          <div class="onboarding-step pending"><div class="step-circle">5</div>Go Live</div>
+        </div>
+      </div>
+
+      <!-- Big Stats Row -->
+      <div class="big-stat-row">
+        <div class="big-stat-item">
+          <div class="big-stat-num" style="color:var(--accent)">247</div>
+          <div class="big-stat-desc">Total Employees</div>
+        </div>
+        <div class="big-stat-item">
+          <div class="big-stat-num" style="color:var(--green)">214</div>
+          <div class="big-stat-desc">Fully Certified</div>
+        </div>
+        <div class="big-stat-item">
+          <div class="big-stat-num" style="color:var(--amber)">25</div>
+          <div class="big-stat-desc">Pending Renewal</div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-search">
+          <span style="color:var(--text-muted)">🔍</span>
+          <input type="text" id="user-search" placeholder="Search by name, email, department…" oninput="filterUsers()">
+        </div>
+        <select class="filter-select" onchange="filterUsers()" id="filter-status">
+          <option value="">All Status</option>
+          <option value="certified">Certified</option>
+          <option value="expiring">Expiring Soon</option>
+          <option value="expired">Expired</option>
+          <option value="pending">Pending</option>
+        </select>
+        <select class="filter-select" onchange="filterUsers()" id="filter-dept">
+          <option value="">All Departments</option>
+          <option value="Emergency">Emergency Response</option>
+          <option value="Healthcare">Healthcare Ops</option>
+          <option value="Corporate">Corporate Training</option>
+          <option value="Field">Field Services</option>
+        </select>
+        <select class="filter-select" onchange="filterUsers()" id="filter-role">
+          <option value="">All Roles</option>
+          <option value="Admin">Admin</option>
+          <option value="Instructor">Instructor</option>
+          <option value="Employee">Employee</option>
+          <option value="Manager">Manager</option>
+        </select>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+          <span style="font-size:0.8rem;color:var(--text-muted)" id="filter-count">247 users</span>
+          <div class="view-toggle">
+            <button class="view-btn active" id="view-table-btn" onclick="setView('table')">☰ Table</button>
+            <button class="view-btn" id="view-grid-btn" onclick="setView('grid')">⊞ Cards</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table View -->
+      <div class="user-table-wrap" id="table-view">
+        <div class="table-toolbar">
+          <div class="table-toolbar-left">
+            <label class="checkbox-wrap">
+              <input type="checkbox" id="select-all" onchange="toggleSelectAll(this)">
+            </label>
+            <span class="selected-count" id="selected-count">0 selected</span>
+            <button class="btn btn-secondary btn-xs" id="bulk-action-btn" style="display:none" onclick="showToast('Bulk action applied!', '✅')">⚡ Bulk Action</button>
+            <button class="btn btn-xs" id="bulk-delete-btn" style="display:none;background:var(--red-light);color:var(--red);border:none" onclick="showToast('Users removed!', '🗑️')">🗑 Remove</button>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Columns customized', '⚙️')">⚙ Columns</button>
+            <button class="btn btn-secondary btn-sm" onclick="showToast('Exported to CSV!', '📥')">⬇ Export</button>
+          </div>
+        </div>
+
+        <table id="user-table">
+          <thead>
+            <tr>
+              <th style="width:40px"></th>
+              <th class="th-sortable" onclick="sortTable('name')">Employee ↕</th>
+              <th class="th-sortable" onclick="sortTable('dept')">Department ↕</th>
+              <th class="th-sortable" onclick="sortTable('role')">Role ↕</th>
+              <th class="th-sortable" onclick="sortTable('status')">Cert. Status ↕</th>
+              <th>Completion</th>
+              <th class="th-sortable" onclick="sortTable('expiry')">Expires ↕</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="user-tbody"></tbody>
+        </table>
+
+        <div class="pagination">
+          <div class="pagination-info" id="pagination-info">Showing 1–12 of 247 employees</div>
+          <div class="pagination-pages">
+            <button class="page-btn" onclick="showToast('Page 1', '📄')">‹</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn" onclick="switchPage(this)">2</button>
+            <button class="page-btn" onclick="switchPage(this)">3</button>
+            <button class="page-btn" onclick="showToast('...', '📄')">…</button>
+            <button class="page-btn" onclick="switchPage(this)">21</button>
+            <button class="page-btn" onclick="showToast('Next page', '📄')">›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid View -->
+      <div class="user-grid" id="grid-view"></div>
+
+    </div>
+    <!-- end users page -->
+
+  </div>
+  <!-- end main -->
+
+</div>
+<!-- end app -->
+
+<!-- NOTIFICATIONS PANEL -->
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-panel-header">
+    <div class="notif-panel-title">🔔 Notifications</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn btn-ghost btn-xs" onclick="showToast('All marked as read', '✅')">Mark all read</button>
+      <button class="icon-btn" onclick="toggleNotifPanel()" style="width:28px;height:28px;font-size:0.9rem">✕</button>
+    </div>
+  </div>
+  <div class="notif-list">
+    <div class="notif-item unread" onclick="showToast('Opening renewal...', '⏰')">
+      <div class="notif-item-icon" style="background:var(--red-light);color:var(--red)">🚨</div>
+      <div>
+        <div class="notif-text"><strong>3 certifications expired</strong> — Sarah M., Mike T., and 1 other require immediate action</div>
+        <div class="notif-time">Just now</div>
+      </div>
+    </div>
+    <div class="notif-item unread" onclick="showToast('Opening client profile...', '🏢')">
+      <div class="notif-item-icon" style="background:var(--green-light);color:var(--green)">🏢</div>
+      <div>
+        <div class="notif-text"><strong>Acme Corp</strong> renewed their enterprise subscription — 45 new seats available</div>
+        <div class="notif-time">18 min ago</div>
+      </div>
+    </div>
+    <div class="notif-item unread" onclick="showToast('Viewing report...', '📊')">
+      <div class="notif-item-icon" style="background:var(--accent-light);color:var(--accent)">📊</div>
+      <div>
+        <div class="notif-text">Monthly compliance <strong>report ready</strong> — 94.2% completion rate, up 2.1% from last month</div>
+        <div class="notif-time">1 hr ago</div>
+      </div>
+    </div>
+    <div class="notif-item" onclick="showToast('Viewing schedule...', '📅')">
+      <div class="notif-item-icon" style="background:var(--amber-light);color:var(--amber)">📅</div>
+      <div>
+        <div class="notif-text"><strong>Training session</strong> scheduled for tomorrow — 12 participants confirmed</div>
+        <div class="notif-time">3 hrs ago</div>
+      </div>
+    </div>
+    <div class="notif-item" onclick="showToast('Viewing user...', '👤')">
+      <div class="notif-item-icon" style="background:var(--purple-light);color:var(--purple)">👤</div>
+      <div>
+        <div class="notif-text"><strong>Nina Patel</strong> completed ACLS recertification — valid for 2 years</div>
+        <div class="notif-time">5 hrs ago</div>
+      </div>
+    </div>
+    <div class="notif-item" onclick="showToast('Viewing audit...', '🔍')">
+      <div class="notif-item-icon" style="background:var(--teal-light);color:var(--teal)">🔍</div>
+      <div>
+        <div class="notif-text">Q4 compliance <strong>audit reminder</strong> — 18 renewals needed before December 31st</div>
+        <div class="notif-time">Yesterday</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- USER PROFILE MODAL -->
+<div class="modal-overlay" id="user-modal" onclick="closeModalOnBg(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="card-title" id="modal-title">Employee Profile</div>
+        <div class="card-subtitle" id="modal-subtitle">Full certification & compliance details</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
